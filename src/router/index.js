@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
   let apiAuth = sessionStorage.getItem('apiAuth');
   var title = to.meta.title || '51卡包'
   window.document.title = title
-  if (!apiAuth && to.name !== 'login' && to.name !== 'error-500' && to.name !== 'error-404') { // 如果不是注册，并且未登录，就跳转到登录页面
+  if (!apiAuth && to.name !== 'login' && to.name !== 'settle' && to.name !== 'error-500' && to.name !== 'error-404') { // 如果不是注册，并且未登录，就跳转到登录页面
     next({
       name: 'login',
     });

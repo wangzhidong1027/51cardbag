@@ -6,6 +6,9 @@ import {router} from './router/index.js'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
+import MyForm from './components/main-components/my-form'
+// import { XInput, Group } from 'vux'
+
 (function (doc, win) {
   var docEl = doc.documentElement
   let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
@@ -20,9 +23,10 @@ import 'mint-ui/lib/style.css'
 })(document, window)
 
 Vue.config.productionTip = false
-
+// Vue.component('x-input', XInput)
+// Vue.component('group', Group)
 Vue.use(MintUI)
-
+Vue.component('my-form', MyForm)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
