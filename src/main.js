@@ -3,12 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import {router} from './router/index.js'
-import MintUI from 'mint-ui'
-import 'mint-ui/lib/style.css'
+import Axios from 'axios'
+import qs from 'qs'
 
-import MyForm from './components/main-components/my-form'
-// import { XInput, Group } from 'vux'
+import { Group, base64 } from 'vux'
 
+
+
+// 获取屏幕宽度设置font-size
 (function (doc, win) {
   var docEl = doc.documentElement
   let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
@@ -22,11 +24,72 @@ import MyForm from './components/main-components/my-form'
   doc.addEventListener('DOMContentLoaded', recalc, false)
 })(document, window)
 
+// 定义axios
+const service = Axios.create({
+  // baseURL: 'http://dev.nzb.yunzujia.com.cn/',
+  // baseURL: 'http://localhost:8080/',
+  timeout: 20000 // request timeout
+})
+service.interceptors.request.use(function (config) {
+  // console.log('请求开始')
+  config.headers['token'] = sessionStorage.getItem('apiAuth')
+  config.headers['platform'] = sessionStorage.getItem('platform')
+  return config
+})
+// 响应拦截
+// http response 服务器响应拦截器，这里拦截401错误，并重新跳入登页重新获取token
+service.interceptors.response.use(
+  response => {
+    // console.log('response:' + response.status)
+    // response.status = 401;
+    // console.log('response:' + response.status)
+    if (response) {
+      switch (response.status) {
+        case 401:
+          // 这里写清除token的代码
+          sessionStorage.clear()
+          router.replace({
+            path: '/login'
+            // query: {redirect: router.currentRoute.fullPath}// 登录成功后跳入浏览的当前页面
+          })
+      }
+    }
+    return response
+  },
+  error => {
+    // console.log('error123:'+ error.response.status);
+    if (error.response) {
+      // 只要报错，统一跳转到500
+      // 这里写清除token的代码
+      sessionStorage.clear()
+      router.replace({
+        path: '/500'
+        // query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
+      })
+      // switch (error.response.status) {
+      //     case 500:
+      //         // 这里写清除token的代码
+      //         sessionStorage.clear();
+      //         router.replace({
+      //             path: '/500'
+      //             // query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
+      //         });
+      // }
+    }
+    return Promise.reject(error.response.data)
+  })
+// 响应拦截结束
+
+// 全局设置
+Vue.prototype.$axios = service
+Vue.prototype.$qs = qs
+Vue.prototype.$base64 = base64
+
+// 全局注册vux组件
+Vue.component('group', Group)
+
 Vue.config.productionTip = false
-// Vue.component('x-input', XInput)
-// Vue.component('group', Group)
-Vue.use(MintUI)
-Vue.component('my-form', MyForm)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

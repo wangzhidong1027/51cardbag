@@ -11,7 +11,6 @@ export default {
 </script>
 
 <style lang="less">
-  /*@import '../static/style/reset.scss';*/
   @import '~vux/src/styles/reset.less';
 html,body{
   width: 100%;
