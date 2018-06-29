@@ -3,30 +3,31 @@
     <h3>请填写商户信息</h3>
     <div class="formbox">
       <group :gutter="'0'">
-        <x-input title="邮箱" placeholder="请输入邮箱" type="email" is-type="email"  v-model="ruleForm.email"></x-input>
-        <x-input title="企业名称" placeholder="请输入企业名称" type="email" is-type="email" ></x-input>
-        <x-address title="所在城市" placeholder="请选择地址" :list="addressData" :value-text-align="'text-align'" v-model="ruleForm.bankAddress"  @on-shadow-change="onShadowChange" :hide-district="true" ></x-address>
-        <x-input title="联系人" placeholder="请输入联系人姓名" type="email" is-type="email" ></x-input>
-        <x-input title="联系人电话" placeholder="请输入联系人电话" type="number" is-type="number" ></x-input>
-        <x-input title="营业执照号" placeholder="请输入营业执照号" type="number" is-type="email" ></x-input>
-        <x-input title="法人身份证号" placeholder="请输入法人身份证号" type="number" is-type="email" ></x-input>
+        <x-input title="邮箱" placeholder="请输入邮箱" type="email" is-type="email"  v-model="ruleForm.email" ></x-input>
+        <x-input title="企业名称" placeholder="请输入企业名称" type="text"  v-model="ruleForm.name" ></x-input>
+        <x-address title="所在城市" placeholder="请选择地址" :list="addressData" :value-text-align="'text-align'" v-model="ruleForm.companycity" :hide-district="true" ></x-address>
+        <x-input title="联系人" placeholder="请输入联系人姓名" type="text" is-type="china-name" v-model="ruleForm.username" ></x-input>
+        <x-input title="联系人电话" placeholder="请输入联系人电话" type="tel" is-type="china-mobile" v-model="ruleForm.usemodel" ></x-input>
+        <x-input title="营业执照号" placeholder="请输入营业执照号" type="email"  v-model="ruleForm.license" ></x-input>
+        <x-input title="法人身份证号" placeholder="请输入法人身份证号" type="email"  v-model="ruleForm.idcardNo"></x-input>
       </group>
       <group title="请填写对公账户信息">
-        <x-input title="对公账户" placeholder="请输入对公账户" type="number" is-type="number" ></x-input>
-        <popup-picker :title="'开户行全称'" :data="list1" v-model="ruleForm.bankname" :placeholder="'请选择开户行全称'" :popup-title="'选择开户行全称'" :value-text-align="'text-left'"></popup-picker>
-        <x-address title="开户城市" placeholder="请选择地址" :list="addressData" :value-text-align="'text-align'" v-model="ruleForm.bankAddress"  @on-shadow-change="onShadowChange" :hide-district="true"></x-address>
-        <x-input title="开户行全称" placeholder="请输入开户行全称" type="email" is-type="email" ></x-input>
-        <x-input title="预留手机号" placeholder="请输入银行预留手机号" type="email" is-type="email" ></x-input>
+        <x-input title="对公账户" placeholder="请输入对公账户" type="number" is-type="number" v-model="ruleForm.bankNo"></x-input>
+        <popup-picker title="银行名称" placeholder="请选择银行名称" popup-title="选择开户行名称" value-text-align="text-left" :data="bankslist" :show-name="true" :v-model="ruleForm.bankname" ></popup-picker>
+        <x-address title="开户城市" placeholder="请选择地址" :list="addressData" :value-text-align="'text-align'" :hide-district="true" v-model="ruleForm.bankAddress"></x-address>
+        <x-input title="开户行全称" placeholder="请输入开户行全称" type="text" is-type="china-name" v-model="ruleForm.fullname" ></x-input>
+        <x-input title="预留手机号" placeholder="请输入银行预留手机号" type="tel" is-type="china-mobile" v-model="ruleForm.bankModel" ></x-input>
       </group>
       <group title="请上传认证信息">
-        <div></div>
+        <button @click="get">fdsfsd</button>
       </group>
     </div>
   </div>
 </template>
 
 <script>
-import { XInput, Group, XButton, Cell, XAddress, ChinaAddressV4Data, PopupPicker } from 'vux'
+import { XInput, Group, XButton, Cell, XAddress, PopupPicker } from 'vux'
+import addresss from '../main-components/address/address'
 export default {
   name: 'settle',
   components: {
@@ -35,7 +36,7 @@ export default {
     Group,
     Cell,
     XAddress,
-    ChinaAddressV4Data,
+    // ChinaAddressV4Data,  城市数据
     PopupPicker
   },
   data () {
@@ -43,29 +44,57 @@ export default {
       ruleForm: {
         email: '',
         name: '',
+        companycity: [],
+        username: '',
+        usemodel: '',
+        license: '',
+        idcardNo: '',
+        bankNo: '',
         bankname: [],
-        bankAddress: []
+        bankAddress: [],
+        fullname: '',
+        bankModel: ''
       },
-      onShow: false,
-      list1: [['小米', 'iPhone', '华为', '情怀', '三星', '其他', '不告诉你']],
-      addressData: ChinaAddressV4Data // 城市数据
+      bankslist: [],
+      addressData: addresss // 城市数据
     }
   },
   methods: {
     onShadowChange () {
-
+    },
+    get () {
+      console.log(this.ruleForm.companycity)
     }
   },
-  Create () {
+  created () {
+    // 获取地址
+    // this.$axios.post(
+    //   'http://localhost:3002/wap/mersettle/getRegion',
+    //   this.$qs.stringify({})
+    // ).then(res => {
+    //   // console.log(res)
+    // }).catch(error => {
+    //   console.log('地址信息' + error)
+    // })
+
+    // h获取银行列表
     this.$axios.post(
-      'http://localhost:3002/wap/mersettle/getRegion',
+      'http://localhost:3002/wap/mersettle/getBanks',
       this.$qs.stringify({})
     ).then(res => {
-      var a = this.$base64.decode(res)
-      console.log(a)
+      if (JSON.parse(this.$base64.decode(res.data)).code === '10000') {
+        var banlStr = this.$base64.decode(res.data).replace(/paybankname/g, 'name')
+        banlStr = banlStr.replace(/bankcode/g, 'value')
+        this.bankslist.push(JSON.parse(banlStr).data)
+      } else {
+        this.$vux.toast.text('获取银行失败', 'middle')
+      }
+    }).catch(error => {
+      console.log('银行列表' + error)
     })
   },
   mounted () {
+
   }
 }
 </script>
@@ -110,8 +139,6 @@ export default {
       line-height: 0.45rem;
       padding: 0 0.15rem;
       color: #333;
-    }
-    .formbox{
     }
   }
 </style>

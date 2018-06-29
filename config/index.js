@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       "/wap/**": {
         type: 'proxy',
-        target: 'http://10.10.18.12:8081/',
+        target: 'http://10.10.18.12:8088/',
         // headers : {
         //   'X-Real-IP' : '127.0.0.1:8080'
         // },

@@ -6,9 +6,7 @@ import {router} from './router/index.js'
 import Axios from 'axios'
 import qs from 'qs'
 
-import { Group, base64 } from 'vux'
-
-
+import { Group, base64, ToastPlugin } from 'vux'
 
 // 获取屏幕宽度设置font-size
 (function (doc, win) {
@@ -48,10 +46,10 @@ service.interceptors.response.use(
         case 401:
           // 这里写清除token的代码
           sessionStorage.clear()
-          router.replace({
-            path: '/login'
-            // query: {redirect: router.currentRoute.fullPath}// 登录成功后跳入浏览的当前页面
-          })
+          // router.replace({
+          //   path: '/login'
+          //   // query: {redirect: router.currentRoute.fullPath}// 登录成功后跳入浏览的当前页面
+          // })
       }
     }
     return response
@@ -62,10 +60,10 @@ service.interceptors.response.use(
       // 只要报错，统一跳转到500
       // 这里写清除token的代码
       sessionStorage.clear()
-      router.replace({
-        path: '/500'
-        // query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
-      })
+      // router.replace({
+      //   path: '/500'
+      //   // query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
+      // })
       // switch (error.response.status) {
       //     case 500:
       //         // 这里写清除token的代码
@@ -87,6 +85,7 @@ Vue.prototype.$base64 = base64
 
 // 全局注册vux组件
 Vue.component('group', Group)
+Vue.use(ToastPlugin)
 
 Vue.config.productionTip = false
 
