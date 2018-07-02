@@ -1,5 +1,11 @@
 <template>
   <div class="upimge">
+    <div class="title" v-html="labelSuffix">
+    </div>
+    <div class="bgbox" @click="select(dataname)">
+      <img src="../../../assets/logo.png" alt="">
+      <input type="file" accept="image/*" :id="dataname" @change="getimg()">
+    </div>
   </div>
 </template>
 <script>
@@ -12,19 +18,8 @@ export default {
       type: String,
       default: ''
     },
-    inline: Boolean,
-    inlineMessage: Boolean,
-    statusIcon: Boolean,
-    showMessage: {
-      type: Boolean,
-      default: true
-    },
-    size: String,
-    disabled: Boolean,
-    validateOnRuleChange: {
-      type: Boolean,
-      default: true
-    }
+    dataname: String,
+    imgsrc: ''
   },
   data () {
     return {
@@ -33,10 +28,20 @@ export default {
   created () {
   },
   methods: {
+    select (dom) {
+      var Dinput = document.getElementById(dom)
+      Dinput.click()
+    },
+    getimg () {
+      console.log(1)
+    }
+  },
+  mounted () {
+
   }
 }
 </script>
 
 <style scoped lang="less">
-
+  @import "./upimage.less";
 </style>

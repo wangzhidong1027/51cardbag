@@ -18,7 +18,12 @@
         <x-input title="开户行全称" placeholder="请输入开户行全称" type="text" is-type="china-name" v-model="ruleForm.fullname" ></x-input>
         <x-input title="预留手机号" placeholder="请输入银行预留手机号" type="tel" is-type="china-mobile" v-model="ruleForm.bankModel" ></x-input>
       </group>
+      <group title="设置登录密码">
+        <x-input title="设置密码" placeholder="请输入登录密码" type="password" is-type="password" v-model="ruleForm.password"></x-input>
+        <x-input title="确认密码" placeholder="请确认登录密码" type="password" is-type="password" v-model="ruleForm.confirm"></x-input>
+      </group>
       <group title="请上传认证信息">
+        <up-image labelSuffix="请上传手持身份证照片"  dataname="take" v-model="img"></up-image>
         <button @click="get">fdsfsd</button>
       </group>
     </div>
@@ -28,6 +33,8 @@
 <script>
 import { XInput, Group, XButton, Cell, XAddress, PopupPicker } from 'vux'
 import addresss from '../main-components/address/address'
+import UpImage from '../main-components/upimage/upimage'
+
 export default {
   name: 'settle',
   components: {
@@ -37,7 +44,8 @@ export default {
     Cell,
     XAddress,
     // ChinaAddressV4Data,  城市数据
-    PopupPicker
+    PopupPicker,
+    UpImage
   },
   data () {
     return {
@@ -53,17 +61,19 @@ export default {
         bankname: [],
         bankAddress: [],
         fullname: '',
-        bankModel: ''
+        bankModel: '',
+        password: '',
+        confirm: ''
       },
+      img: '',
       bankslist: [],
       addressData: addresss // 城市数据
     }
   },
   methods: {
-    onShadowChange () {
-    },
     get () {
       console.log(this.ruleForm.companycity)
+      console.log(this.onShadowChange)
     }
   },
   created () {
