@@ -6,7 +6,18 @@ import {router} from './router/index.js'
 import Axios from 'axios'
 import qs from 'qs'
 
-import { Group, base64, ToastPlugin } from 'vux'
+import global_ from './components/global/global'
+
+import { Group, base64, ToastPlugin, AlertPlugin, ConfirmPlugin, LoadingPlugin } from 'vux'
+
+// 全局注册vux组件
+Vue.component('group', Group)
+Vue.use(ToastPlugin)
+Vue.use(AlertPlugin)
+Vue.use(ConfirmPlugin)
+Vue.use(LoadingPlugin)
+
+Vue.config.productionTip = false;
 
 // 获取屏幕宽度设置font-size
 (function (doc, win) {
@@ -22,6 +33,10 @@ import { Group, base64, ToastPlugin } from 'vux'
   doc.addEventListener('DOMContentLoaded', recalc, false)
 })(document, window)
 
+// 解决点击延迟
+// const FastClick = require('fastclick')
+// FastClick.attach(document.body)
+
 // 定义axios
 const service = Axios.create({
   // baseURL: 'http://dev.nzb.yunzujia.com.cn/',
@@ -30,7 +45,7 @@ const service = Axios.create({
 })
 service.interceptors.request.use(function (config) {
   // console.log('请求开始')
-  config.headers['token'] = sessionStorage.getItem('apiAuth')
+  config.headers['Token'] = sessionStorage.getItem('apiAuth')
   config.headers['platform'] = sessionStorage.getItem('platform')
   return config
 })
@@ -82,12 +97,7 @@ service.interceptors.response.use(
 Vue.prototype.$axios = service
 Vue.prototype.$qs = qs
 Vue.prototype.$base64 = base64
-
-// 全局注册vux组件
-Vue.component('group', Group)
-Vue.use(ToastPlugin)
-
-Vue.config.productionTip = false
+Vue.prototype.$GLOBAL = global_
 
 /* eslint-disable no-new */
 new Vue({

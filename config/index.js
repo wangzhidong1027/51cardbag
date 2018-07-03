@@ -6,14 +6,14 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       "/wap/**": {
         type: 'proxy',
-        target: 'http://10.10.18.12:8088/',
+        // target: 'http://10.10.18.12:8088/',
+        target: 'http://10.10.18.87:8080/',
         // headers : {
         //   'X-Real-IP' : '127.0.0.1:8080'
         // },
