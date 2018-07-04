@@ -6,9 +6,9 @@
         <x-img :src="src" @on-success="success" @on-error="error" class="ximg-demo" error-class="ximg-error" container="#card-index"></x-img>
       </div>
       <div class="good-text">
-        <p><b>了空喊口号离开ID防守</b></p>
+        <p><b>了空喊口号离开ID防守大打算打算阿萨德撒</b></p>
         <div class="recommend">
-          法轮大法看见了看电得了副科级连接就了骷髅精
+          法轮大法看见了看电得了副科级连接就了骷髅精3213123
         </div>
         <div class="price">
           <i>￥</i><b>9000.00</b>

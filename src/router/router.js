@@ -30,12 +30,21 @@ const index = {
   },
   component: () => import('@/components/index')
 }
+const publish = {
+  path: '/publish',
+  name: 'publish',
+  meta: {
+    title: '商品发布'
+  },
+  component: () => import('@/components/publish/publish')
+}
 
 export const routers = [
   login,
   settle,
   page404,
   index,
+  publish,
   {
     path: '/',
     redirect: "/login"
