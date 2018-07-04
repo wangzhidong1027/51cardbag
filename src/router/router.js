@@ -2,7 +2,7 @@ const login = {
   path: '/login',
   name: 'login',
   meta: {
-    title: '登录'
+    title: '商户登录'
   },
   component: () => import('@/components/login')
 }
@@ -10,7 +10,7 @@ const settle = {
   path: '/settle',
   name: 'settle',
   meta: {
-    title: '入驻'
+    title: '商户入驻'
   },
   component: () => import('@/components/settle/settle')
 }
@@ -22,12 +22,20 @@ const page404 = {
   },
   component: () => import('@/components/error-page/page404')
 }
-
+const index = {
+  path: '/index',
+  name: 'index',
+  meta: {
+    title: '卡宝管家'
+  },
+  component: () => import('@/components/index')
+}
 
 export const routers = [
   login,
   settle,
   page404,
+  index,
   {
     path: '/',
     redirect: "/login"

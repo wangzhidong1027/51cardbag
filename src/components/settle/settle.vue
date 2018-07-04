@@ -23,8 +23,13 @@
         <x-input title="确认密码" placeholder="请确认登录密码" type="password" is-type="password" v-model="ruleForm.confirm"></x-input>
       </group>
       <group title="请上传认证信息">
-        <up-image labelSuffix="请上传手持身份证照片"  dataname="take" v-model="img"></up-image>
-        <button @click="get">fdsfsd</button>
+        <up-image labelSuffix="请上传手持身份证照片"  dataname="takeimg" v-model="takeimg"></up-image>
+        <up-image labelSuffix="请上传营业执照"  dataname="licenseimg" v-model="licenseimg"></up-image>
+        <up-image labelSuffix="请上传企业LOGO"  dataname="logoimg" v-model="logoimg"></up-image>
+        <up-image labelSuffix="请上传企业资质"  dataname="aptitude" v-model="aptitude"></up-image>
+        <div class="btn-box">
+          <button @click="get">提交入驻</button>
+        </div>
       </group>
     </div>
   </div>
@@ -65,15 +70,16 @@ export default {
         password: '',
         confirm: ''
       },
-      img: '',
+      takeimg: '',
+      licenseimg: '',
+      logoimg: '',
+      aptitude: '',
       bankslist: [],
       addressData: addresss // 城市数据
     }
   },
   methods: {
     get () {
-      console.log(this.ruleForm.companycity)
-      console.log(this.onShadowChange)
     }
   },
   created () {
@@ -149,6 +155,22 @@ export default {
       line-height: 0.45rem;
       padding: 0 0.15rem;
       color: #333;
+    }
+    .btn-box{
+      padding: .2rem 0.15rem;
+      height: 0.4rem;
+      background: #fff;
+      border: none;
+      button{
+        display: block;
+        height: 0.4rem;
+        background: #f0c37b;
+        border: none;
+        width: 100%;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.16rem;
+      }
     }
   }
 </style>
