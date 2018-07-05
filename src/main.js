@@ -8,14 +8,15 @@ import qs from 'qs'
 
 import global_ from './components/global/global'
 
-import { Group, base64, ToastPlugin, AlertPlugin, ConfirmPlugin, LoadingPlugin } from 'vux'
+import Loading from './components/main-components/loading/loading'
+import { Group, base64, ToastPlugin, AlertPlugin, ConfirmPlugin } from 'vux'
 
 // 全局注册vux组件
 Vue.component('group', Group)
 Vue.use(ToastPlugin)
 Vue.use(AlertPlugin)
 Vue.use(ConfirmPlugin)
-Vue.use(LoadingPlugin)
+Vue.use(Loading)
 
 Vue.config.productionTip = false;
 

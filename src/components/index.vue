@@ -43,15 +43,19 @@
       <divider><p style="font-size: 0.12rem">没有更多商品了</p></divider>
       <divider><p style="font-size: 0.12rem">您还未发布商品</p></divider>
     </div>
+    <mytabbar></mytabbar>
   </div>
 </template>
 
 <script>
 import { Divider, XButton, Flexbox, FlexboxItem, Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
 import GoodsItem from './goodlist/goods-item'
+import Mytabbar from './main-components/tabbar/tabbar'
+
 export default{
   name: 'index',
   components: {
+    Mytabbar,
     Divider,
     GoodsItem,
     XButton,
@@ -65,6 +69,16 @@ export default{
     return {
       goods: {}
     }
+  },
+  created () {
+    // this.$axios.post(
+    //   this.$GLOBAL.commonGetGoodsApi,
+    //   this.$qs.stringify({})
+    // ).then(res => {
+    //   console.log(res)
+    // }).catch(error => {
+    //   console.log('商品列表' + error)
+    // })
   },
   computed: {
 

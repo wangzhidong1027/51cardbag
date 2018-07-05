@@ -8,8 +8,8 @@
     </div>
   </div>
 </template>
-<script>
 
+<script>
 export default {
   name: 'UpImage',
   componentName: 'UpImage',
@@ -75,9 +75,35 @@ export default {
           ctx.drawImage(this, 0, 0, expectWidth, expectHeight)
           var base64 = null
           base64 = canvas.toDataURL('image/jpeg', 1)
-          _this.imgsrc = base64
+          _this.upimg(base64)
         }
       }
+    },
+    upimg (baseimg) {
+      this.loading.show({
+        text: '上传中'
+      })
+      this.$axios.post(
+        this.$GLOBAL.commonUploadImageApi,
+        this.$qs.stringify({
+          fileImg: baseimg
+        })
+      ).then(res => {
+        this.loading.hide()
+        var a = this.$base64.decode(res.data)
+        a = JSON.parse(a)
+        if (a.code === '10000' && a.data.err === '10000') {
+          this.imgsrc = baseimg
+          this.$emit('input', 'a.data.data.imgUrl')
+        } else {
+          this.$vux.toast.show({
+            text: '<p style="line-height: 0.1rem;font-size: 0.16rem;">上传失败<p>',
+            type: 'warn'
+          })
+        }
+      }).catch(error => {
+        console.log('图片上传' + error)
+      })
     }
   },
   mounted () {

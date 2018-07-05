@@ -11,7 +11,7 @@
       </group>
       <div class="upimg" @click="getimg">
         <img v-if="imgsrc" :src="imgsrc" alt="">
-        <div class="logo" v-if="!imgsrc">
+        <div class="logo" v-if="!imgsrc" >
           <p><span>+</span></p>
           <p>添加</p>
         </div>
@@ -47,6 +47,10 @@ export default{
   },
   methods: {
     getimg () {
+
+    },
+    ImgBase64 () {
+
     }
   },
   mounted () {

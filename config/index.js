@@ -3,6 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+const ip = require('./ipconfig')
 
 module.exports = {
   dev: {
@@ -12,8 +13,16 @@ module.exports = {
     proxyTable: {
       "/wap/**": {
         type: 'proxy',
-        // target: 'http://10.10.18.12:8088/',
-        target: 'http://10.10.18.87:8080/',
+        target: 'http://10.10.18.12:8088/',
+        // target: 'http://10.10.18.87:8080/',
+        // headers : {
+        //   'X-Real-IP' : '127.0.0.1:8080'
+        // },
+        changeOrigin: true,
+      },
+      "/index.php": {
+        type: 'proxy',
+        target:'https://tapi.7shengqian.com/',
         // headers : {
         //   'X-Real-IP' : '127.0.0.1:8080'
         // },
@@ -22,7 +31,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: ip.ip || 'localhost', // can be overwritten by process.env.HOST
     port: 3002, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

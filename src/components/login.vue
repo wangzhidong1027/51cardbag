@@ -5,10 +5,10 @@
     </div>
     <group :gutter="'0'">
       <div class="inpub_box">
-        <x-input  placeholder="请输入手机号" type="tel" is-type="china-mobile" v-model="loginForm.phonenum" :max="13" mask="999 9999 9999" required  ref="phonenum"></x-input>
+        <x-input  placeholder="请输入手机号" type="tel" is-type="china-mobile" v-model="loginForm.username" :max="13" mask="999 9999 9999" required  ref="username"></x-input>
       </div>
       <div class="inpub_box">
-        <x-input  placeholder="请输入密码" type="password"  v-model="loginForm.password" required ref="password" :min="6"></x-input>
+        <x-input  placeholder="请输入密码" type="password"  v-model="loginForm.password" required ref="password" :min="6" :max="15"></x-input>
       </div>
     </group>
     <div class="button-box">
@@ -33,12 +33,12 @@ export default{
   data () {
     return {
       loginForm: {
-        phonenum: '',
+        username: '',
         password: ''
       },
       rules: {
-        phonenum: {message: '请输入正确的手机号'},
-        password: {message: '请输入密码'}
+        username: {message: '请输入正确的手机号'},
+        password: {message: '请输入正确密码'}
       },
       show: true
     }
@@ -48,9 +48,6 @@ export default{
   },
   methods: {
     keyDown () {
-      this.$vux.loading.show({
-        text: 'Loading'
-      })
       for (var i in this.loginForm) {
         if (!this.$refs[i].valid) {
           this.$vux.alert.show({
@@ -59,16 +56,15 @@ export default{
           })
           return
         }
-        this.$vux.loading.show({
-          text: '登录中'
-        })
-        this.$axios.post(this.$GLOBAL.commonBackLoginApi, this.$qs.stringify({
-          username: this.$base64.encode(this.loginForm.phonenum),
-          password: this.$base64.encode(this.loginForm.password)
-        })).then(res => {
-          console.log(res)
-        })
       }
+      this.loading.show({text: '登陆中'})
+      this.$axios.post(this.$GLOBAL.commonLoginApi, this.$qs.stringify({
+        username: this.$base64.encode(this.loginForm.username),
+        password: this.$base64.encode(this.loginForm.password)
+      })).then(res => {
+        this.loading.hide()
+        console.log(res)
+      })
     },
     login () {
 
@@ -84,12 +80,11 @@ export default{
 </script>
 
 <style lang="less">
-  @import '~vux/src/styles/reset.less';
 #login{
   padding: 0 0.15rem;
   background: #fff;
   height: 100%;
-  overflow: hidden;
+  overflow: scroll;
   .logo_box{
     padding: 0.6rem;
     img{
