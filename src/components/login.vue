@@ -5,7 +5,7 @@
     </div>
     <group :gutter="'0'">
       <div class="inpub_box">
-        <x-input  placeholder="请输入手机号" type="tel" is-type="china-mobile" v-model="loginForm.username" :max="13" mask="999 9999 9999" required  ref="username"></x-input>
+        <x-input  placeholder="请输入手机号" type="tel" is-type="china-mobile" v-model="loginForm.username" :max="13"  required  ref="username"></x-input>
       </div>
       <div class="inpub_box">
         <x-input  placeholder="请输入密码" type="password"  v-model="loginForm.password" required ref="password" :min="6" :max="15"></x-input>
@@ -59,8 +59,7 @@ export default{
       }
       this.loading.show({text: '登陆中'})
       this.$axios.post(this.$GLOBAL.commonLoginApi, this.$qs.stringify({
-        username: this.$base64.encode(this.loginForm.username),
-        password: this.$base64.encode(this.loginForm.password)
+        data: this.$base64.encode(JSON.stringify(this.loginForm))
       })).then(res => {
         this.loading.hide()
         console.log(res)

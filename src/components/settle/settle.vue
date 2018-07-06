@@ -3,30 +3,52 @@
     <h3>请填写商户信息</h3>
     <div class="formbox">
       <group :gutter="'0'">
-        <x-input title="邮箱" placeholder="请输入邮箱" type="number" is-type="email"  v-model="ruleForm.email" ></x-input>
-        <x-input title="企业名称" placeholder="请输入企业名称" type="text"  v-model="ruleForm.name" ></x-input>
-        <x-address title="所在城市" placeholder="请选择地址" :list="addressData" :value-text-align="'text-align'" v-model="ruleForm.companycity" :hide-district="true" ></x-address>
-        <x-input title="联系人" placeholder="请输入联系人姓名" type="text" is-type="china-name" v-model="ruleForm.username" ></x-input>
-        <x-input title="联系人电话" placeholder="请输入联系人电话" type="tel" is-type="china-mobile" v-model="ruleForm.usemodel" ></x-input>
-        <x-input title="营业执照号" placeholder="请输入营业执照号" type="email"  v-model="ruleForm.license" ></x-input>
-        <x-input title="法人身份证号" placeholder="请输入法人身份证号" type="email"  v-model="ruleForm.idcardNo"></x-input>
+        <x-input title="邮箱" placeholder="请输入邮箱" type="email" is-type="email"  v-model="settleForm.email" ref="email" required>
+        </x-input>
+        <x-input title="企业名称" placeholder="请输入企业名称" type="text" :is-type="chinese" v-model="settleForm.companyname" :max="18" ref="companyname" required>
+        </x-input>
+        <x-address title="所在城市" placeholder="请选择企业地址" :list="addressData" :value-text-align="'text-align'" v-model="companycity"  :hide-district="true" >
+        </x-address>
+        <x-input title="详细地址" placeholder="请输企业详细地址" type="text"  is-type="china-name" v-model="settleForm.address" ref="address"  required>
+        </x-input>
+        <x-input title="联系人" placeholder="请输入联系人姓名" type="text" is-type="china-name" v-model="settleForm.linkname" ref="linkname" required>
+        </x-input>
+        <x-input title="联系人电话" placeholder="请输入联系人电话" type="tel" is-type="china-mobile" v-model="settleForm.linkphone" ref="linkphone" required>
+        </x-input>
+        <x-input title="营业执照号" placeholder="请输入营业执照号" type="tel" :is-type="special" :max="18" v-model="settleForm.certificate" ref="certificate" required>
+        </x-input>
+        <x-input title="法人姓名" placeholder="请输入法人姓名" type="text" is-type="china-name" v-model="settleForm.legalname" ref="legalname" required>
+        </x-input>
+        <x-input title="法人身份证号" placeholder="请输入法人身份证号" type="email" :is-type="idcard" :max="18" v-model="settleForm.legalidcard" ref="legalidcard" required>
+        </x-input>
       </group>
       <group title="请填写对公账户信息">
-        <x-input title="对公账户" placeholder="请输入对公账户" type="number" is-type="number" v-model="ruleForm.bankNo"></x-input>
-        <popup-picker title="银行名称" placeholder="请选择银行名称" popup-title="选择开户行名称" value-text-align="text-left" :data="bankslist" :show-name="true"   v-model="ruleForm.bankname" ></popup-picker>
-        <x-address title="开户城市" placeholder="请选择地址" :list="addressData" :value-text-align="'text-align'" :hide-district="true" v-model="ruleForm.bankAddress"></x-address>
-        <x-input title="开户行全称" placeholder="请输入开户行全称" type="text" is-type="china-name" v-model="ruleForm.fullname" ></x-input>
-        <x-input title="预留手机号" placeholder="请输入银行预留手机号" type="tel" is-type="china-mobile" v-model="ruleForm.bankModel" ></x-input>
+        <x-input title="对公账户" placeholder="请输入对公账户" type="number" is-type="number" v-model="settleForm.bankno" ref="bankno" required>
+        </x-input>
+        <popup-picker title="银行名称" placeholder="请选择银行名称" popup-title="选择开户行名称" value-text-align="text-left" :data="bankslist" :show-name="true" v-model="bankid">
+        </popup-picker>
+        <x-address title="开户城市" placeholder="请选择地址" :list="addressData" :value-text-align="'text-align'" :hide-district="true" v-model="bankAddress">
+        </x-address>
+        <x-input title="开户行全称" placeholder="请输入开户行全称" type="text"  v-model="settleForm.banksubname" ref="banksubname" required>
+        </x-input>
+        <x-input title="预留手机号" placeholder="请输入银行预留手机号" type="tel" is-type="china-mobile" v-model="settleForm.mobile" ref="mobile" required>
+        </x-input>
       </group>
       <group title="设置登录密码">
-        <x-input title="设置密码" placeholder="请输入登录密码" type="password" is-type="password" v-model="ruleForm.password"></x-input>
-        <x-input title="确认密码" placeholder="请确认登录密码" type="password" is-type="password" v-model="ruleForm.confirm"></x-input>
+        <x-input title="设置密码" placeholder="请输入登录密码" type="password" is-type="password" :min='6' :max="15" v-model="settleForm.password" ref="password" required>
+        </x-input>
+        <x-input title="确认密码" placeholder="请确认登录密码" type="password" :max="18" is-type="password" :equal-with='settleForm.password' v-model="settleForm.pwd" ref="pwd" required>
+        </x-input>
       </group>
       <group title="请上传认证信息">
-        <up-image labelSuffix="请上传手持身份证照片"  dataname="takeimg" v-model="takeimg"></up-image>
-        <up-image labelSuffix="请上传营业执照"  dataname="licenseimg" v-model="licenseimg"></up-image>
-        <up-image labelSuffix="请上传企业LOGO"  dataname="logoimg" v-model="logoimg"></up-image>
-        <up-image labelSuffix="请上传企业资质"  dataname="aptitude" v-model="aptitude"></up-image>
+        <up-image labelSuffix="请上传手持身份证照片"  dataname="lefalhand" v-model="lefalhand">
+        </up-image>
+        <up-image labelSuffix="请上传营业执照"  dataname="bslicense" v-model="bslicense">
+        </up-image>
+        <up-image labelSuffix="请上传企业Logo<b style='color:#ff3737;font-size:0.12rem '> (建议上传正方形logo)<b>"  dataname="logo" v-model="logo">
+        </up-image>
+        <up-image labelSuffix="请上传企业资质<b style='color:#ff3737;font-size:0.12rem '> 可不传<b>"  dataname="aptitude" v-model="aptitude">
+        </up-image>
         <div class="btn-box">
           <button @click="get">提交入驻</button>
         </div>
@@ -54,39 +76,36 @@ export default {
   },
   data () {
     return {
-      ruleForm: {
+      settleForm: {
         email: '',
-        name: '',
-        companycity: [],
-        username: '',
-        usemodel: '',
-        license: '',
-        idcardNo: '',
-        bankNo: '',
-        bankname: [],
-        bankAddress: [],
-        fullname: '',
-        bankModel: '',
+        companyname: '',
+        address: '',
+        linkname: '',
+        linkphone: '',
+        certificate: '',
+        legalname: '',
+        legalidcard: '',
+        bankno: '',
+        banksubname: '',
+        mobile: '',
         password: '',
-        confirm: ''
+        pwd: ''
       },
-      takeimg: '',
-      licenseimg: '',
-      logoimg: '',
+      companycity: [],
+      bankid: [],
+      bankAddress: [],
+      lefalhand: '',
+      bslicense: '',
+      logo: '',
       aptitude: '',
-      bankslist: [],
+      bankslist: [], // 银行列表
       addressData: addresss // 城市数据
-    }
-  },
-  methods: {
-    get () {
-      console.log(this.ruleForm.bankname)
     }
   },
   created () {
     // 获取地址
     // this.$axios.post(
-    //   'http://localhost:3002/wap/mersettle/getRegion',
+    //   'http://localhost:3002/wap/mersettleForm/getRegion',
     //   this.$qs.stringify({})
     // ).then(res => {
     //   // console.log(res)
@@ -94,16 +113,17 @@ export default {
     //   console.log('地址信息' + error)
     // })
 
-    // h获取银行列表
+    // 获取银行列表
     this.$axios.post(
       this.$GLOBAL.commonGetBankApi,
       this.$qs.stringify({})
     ).then(res => {
       if (JSON.parse(this.$base64.decode(res.data)).code === '10000') {
         var banlStr = this.$base64.decode(res.data).replace(/paybankname/g, 'name')
-        banlStr = banlStr.replace(/id/g, 'value')
+        banlStr = banlStr.replace(/id":/g, 'value":"')
+        banlStr = banlStr.replace(/,"name"/g, '","name"')
         this.bankslist.push(JSON.parse(banlStr).data)
-        console.log(this.bankslist)
+        // console.log(this.bankslist)
       } else {
         this.$vux.toast.text('获取银行失败', 'middle')
       }
@@ -111,8 +131,99 @@ export default {
       console.log('银行列表' + error)
     })
   },
-  mounted () {
-
+  methods: {
+    // 注册提交
+    get () {
+      for (var i in this.settleForm) {
+        if (!this.$refs[i].valid) {
+          this.$vux.alert.show({
+            title: '提示',
+            content: '请填写正确信息'
+          })
+          return
+        }
+      }
+      var data = { ...this.settleForm }
+      if (this.companycity.length) {
+        data['province'] = this.companycity[0]
+        data['city'] = this.companycity[1]
+      } else {
+        this.$vux.alert.show({
+          title: '提示',
+          content: '请选择企业所在城市'
+        })
+        return
+      }
+      if (this.bankid.length) {
+        data['bankid'] = this.bankid[0]
+      } else {
+        this.$vux.alert.show({
+          title: '提示',
+          content: '请选择银行名称'
+        })
+        return
+      }
+      if (this.bankAddress.length) {
+        data['bank_province'] = this.bankAddress[0]
+        data['bank_city'] = this.bankAddress[1]
+      } else {
+        this.$vux.alert.show({
+          title: '提示',
+          content: '请选择开户行城市'
+        })
+      }
+      if (this.lefalhand && this.bslicense && this.logo) {
+        data['lefalhand'] = this.lefalhand
+        data['bslicense'] = this.bslicense
+        data['logo'] = this.logo
+        data['aptitude'] = this.aptitude
+      } else {
+        this.$vux.alert.show({
+          title: '提示',
+          content: '请上传完整图像信息'
+        })
+        return
+      }
+      var jsonData = JSON.stringify(data)
+      console.log(jsonData)
+      this.$axios.post(
+        this.$GLOBAL.commonSettleApi,
+        this.$qs.stringify({
+          data: this.$base64.encode(jsonData)
+        })
+      ).then(res => {
+        var reslut = this.$base64.decode(res.data)
+        console.log(reslut)
+      }).catch(error => {
+        console.log('商户入驻' + error)
+      })
+      console.log(this.settleForm)
+      console.log(data)
+    },
+    chinese (value) {
+      var res = this.$ecDo.checkType.check(value, 'chinese')
+      if (res) {
+        return { valid: true }
+      } else {
+        return { valid: false, msg: '企业名称' }
+      }
+    },
+    special (value) {
+      var res = this.$ecDo.checkType.check(value, 'special')
+      if (res) {
+        return { valid: true }
+      } else {
+        return { valid: false, msg: '格式不正确' }
+      }
+    },
+    idcard (value) {
+      var res = this.$ecDo.checkType.check(value, 'idcard')
+      if (res) {
+        return { valid: true }
+      } else {
+        return { valid: false, msg: '身份证号格式不正确' }
+      }
+    }
   }
 }
 </script>
@@ -160,7 +271,6 @@ export default {
     }
     .btn-box{
       padding: .2rem 0.15rem;
-      height: 0.4rem;
       background: #fff;
       border: none;
       button{

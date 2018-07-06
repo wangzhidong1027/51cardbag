@@ -2,4 +2,4 @@
 /config/
 /dist/
 /*.js
-/src/router/*.js
+/src/assets/ec-do.js

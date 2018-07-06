@@ -47,10 +47,10 @@ export const routers = [
   publish,
   {
     path: '/',
-    redirect: "/login"
+    redirect: '/login'
   },
   {
     path: '/*',
-    redirect: "/404"
+    redirect: '/404'
   }
 ]

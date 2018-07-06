@@ -6,6 +6,7 @@ import {router} from './router/index.js'
 import Axios from 'axios'
 import qs from 'qs'
 
+import ecDo from './assets/ec-do'
 import global_ from './components/global/global'
 
 import Loading from './components/main-components/loading/loading'
@@ -99,6 +100,7 @@ Vue.prototype.$axios = service
 Vue.prototype.$qs = qs
 Vue.prototype.$base64 = base64
 Vue.prototype.$GLOBAL = global_
+Vue.prototype.$ecDo = ecDo
 
 /* eslint-disable no-new */
 new Vue({
