@@ -34,17 +34,25 @@ const publish = {
   path: '/publish',
   name: 'publish',
   meta: {
-    title: '商品发布'
+    title: '发布商品'
   },
   component: () => import('@/components/publish/publish')
 }
-
+const main = {
+  path: '/main',
+  name: 'main',
+  meta: {
+    title: '个人中心'
+  },
+  component: () => import('@/components/main')
+}
 export const routers = [
   login,
   settle,
   page404,
   index,
   publish,
+  main,
   {
     path: '/',
     redirect: '/login'

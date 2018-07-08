@@ -2,24 +2,23 @@
   <div id="publish">
     <div class="formbox">
       <group gutter='0'>
-        <div class="input-box"><x-input placeholder='标题 输入商品名称' v-model="goodForm.name" type='text' :max
-        ='16' required></x-input></div>
-        <div class="input-box vux-1px-tb"><x-input placeholder='价格 输入商品价格' type='number' is-type='number' v-model="goodForm.price" required></x-input></div>
+        <div class="input-box"><x-input placeholder='标题 输入商品名称' v-model="publishForm.name" ref='name' type='text' :max='16' required></x-input></div>
+        <div class="input-box vux-1px-tb"><x-input placeholder='价格 输入商品价格' type='number' is-type='number' v-model="publishForm.price" ref="price" required></x-input></div>
         <div class="textarea-box">
           <x-textarea placeholder='商品简介（40字以内）' :max='40' :rows='4' v-model="recommend" ></x-textarea>
         </div>
       </group>
       <div class="upimg" @click="getimg">
-        <img v-if="imgsrc" :src="imgsrc" alt="">
-        <div class="logo" v-if="!imgsrc" >
+        <img v-if="imgsrc" :src="imgsrc">
+        <div class="logo" v-if="!imgsrc">
           <p><span>+</span></p>
           <p>添加</p>
         </div>
-        <input id='img' type="file"  ref="aptitude" accept="image/*" @change="ImgBase64($event)">
+        <input id='publishimg' type="file" accept="image/*" @change="ImgBase64($event)">
       </div>
     </div>
     <div class="btnbox">
-      <x-button type='warn' style="border-radius:0px;" disabled="disabled"><b style="font-weight: normal;color:#fff;font-size:.16rem">确定发布</b></x-button>
+      <x-button type='warn' style="border-radius:0px;" @click.native="publishGoods"><b style="font-weight: normal;color:#fff;font-size:.16rem" >确定发布</b></x-button>
     </div>
   </div>
 </template>
@@ -36,21 +35,139 @@ export default{
   },
   data () {
     return {
-      goodForm: {
+      publishForm: {
         name: '',
         price: ''
       },
       recommend: '',
-      imgsrc: '',
-      disabled: false
+      imgsrc: ''
+    }
+  },
+  computed: {
+    disabled: function () {
+      // console.log(this.publishForm)
+      // for (var k in this.publishForm) {
+      //   console.log(this.$refs[k])
+      //   // if (!this.$refs[k].valid) {
+      //   //   return true
+      //   // }
+      // }
+      // if (!this.recommend) {
+      //   return true
+      // }
+      // if (!this.imgsrc) {
+      //   return true
+      // }
+      console.log(1)
+      return false
     }
   },
   methods: {
     getimg () {
-
+      document.getElementById('publishimg').click()
     },
-    ImgBase64 () {
-
+    ImgBase64 (e) {
+      let tag = e.target
+      let fileList = tag.files
+      let _this = this
+      if (!fileList.length) {
+        return
+      }
+      let reader = new FileReader()
+      reader.readAsDataURL(fileList[0])
+      reader.onload = function (e) {
+        var image = new Image()
+        image.src = e.target.result
+        image.onload = function () {
+          var expectWidth = image.naturalWidth
+          var expectHeight = image.naturalHeight
+          if (
+            this.naturalWidth > this.naturalHeight &&
+            this.naturalWidth > 800
+          ) {
+            expectWidth = 800
+            expectHeight =
+              expectWidth * this.naturalHeight / this.naturalWidth
+          } else if (
+            this.naturalHeight > this.naturalWidth &&
+            this.naturalHeight > 1200
+          ) {
+            expectHeight = 1200
+            expectWidth =
+              expectHeight * this.naturalWidth / this.naturalHeight
+          }
+          var canvas = document.createElement('canvas')
+          var ctx = canvas.getContext('2d')
+          canvas.width = expectWidth
+          canvas.height = expectHeight
+          ctx.drawImage(this, 0, 0, expectWidth, expectHeight)
+          var base64 = null
+          base64 = canvas.toDataURL('image/jpeg', 1)
+          _this.upimg(base64)
+        }
+      }
+    },
+    upimg (baseimg) {
+      this.loading.show({
+        text: '上传中'
+      })
+      this.$axios.post(
+        this.$GLOBAL.commonUploadImageApi,
+        this.$qs.stringify({
+          fileImg: baseimg
+        })
+      ).then(res => {
+        this.loading.hide()
+        var a = this.$base64.decode(res.data)
+        a = JSON.parse(a)
+        if (a.code === '10000' && a.data.err === '10000') {
+          // this.imgsrc = baseimg
+          this.imgsrc = a.data.data.imgUrl
+        } else {
+          this.$vux.toast.show({
+            text: '<p style="line-height: 0.1rem;font-size: 0.16rem;">上传失败<p>',
+            type: 'warn'
+          })
+        }
+      }).catch(error => {
+        console.log('图片上传' + error)
+      })
+    },
+    publishGoods () {
+      for (var i in this.publishForm) {
+        console.log(this.$refs[i].valid)
+        if (!this.$refs[i].valid) {
+          this.$vux.alert.show({
+            title: '提示',
+            content: '请填写完整信息'
+          })
+          return
+        }
+      }
+      if (!this.recommend) {
+        this.$vux.alert.show({
+          title: '提示',
+          content: '请填写商品简介'
+        })
+        return
+      }
+      if (!this.imgsrc) {
+        this.$vux.alert.show({
+          title: '提示',
+          content: '请上传商品图片'
+        })
+        return
+      }
+      this.loading.show({text: '发布中'})
+      this.$axios.post(
+        this.$GLOBAL.commonGoodsPushApi,
+        this.$qs.stringify({})
+      ).then(res => {
+        this.loading.hide()
+        console.log(res)
+      }).catch(err => {
+        console.log('发布商品' + err)
+      })
     }
   },
   mounted () {

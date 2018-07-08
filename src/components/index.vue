@@ -27,23 +27,23 @@
                     <goods-item :goods="goods"></goods-item>
                   </div>
                   <div slot="right-menu">
-                    <swipeout-button  type="default">删除</swipeout-button>
+                    <swipeout-button  type="default" @click.native="deleteGood">删除</swipeout-button>
                   </div>
                 </swipeout-item>
               </swipeout>
               <div class="btnbox">
                 <div class="link-box"><x-button type="primary" :gradients="['#1D62F0', '#19D5FD']"><b class="shou">微信收款</b></x-button></div>
                 <div class="link-box"><x-button type="primary" :gradients="['#FF2719', '#ff7700']"><b class="shou">分期收款</b></x-button></div>
-                <button class="vux-1px del">删</button>
+                <button class="vux-1px del" @click="deleteGood">删</button>
               </div>
             </div>
           </group>
         </flexbox-item>
       </flexbox>
-      <divider><p style="font-size: 0.12rem">没有更多商品了</p></divider>
-      <divider><p style="font-size: 0.12rem">您还未发布商品</p></divider>
+      <divider v-if="goods.length"><p style="font-size: 0.12rem">没有更多商品了</p></divider>
+      <divider v-else><p style="font-size: 0.12rem">您还未发布商品</p></divider>
     </div>
-    <mytabbar></mytabbar>
+    <mytabbar state='index'></mytabbar>
   </div>
 </template>
 
@@ -71,6 +71,16 @@ export default{
     }
   },
   created () {
+    // 获取商户信息
+    // this.$axios.post(
+    //   this.$GLOBAL.commonGetMerchIngoApi,
+    //   this.$qs.stringify({})
+    // ).then(res => {
+    //   console.log(res)
+    // }).catch(error => {
+    //   console.log('商品列表' + error)
+    // })
+    // 获取商品列表
     // this.$axios.post(
     //   this.$GLOBAL.commonGetGoodsApi,
     //   this.$qs.stringify({})
@@ -84,6 +94,16 @@ export default{
 
   },
   methods: {
+    deleteGood (id) {
+      this.$axios.post(
+        this.$GLOBAL.commonSeleteGoodsApi,
+        this.$qs.stringify({id})
+      ).then(res => {
+        console.log(res)
+      }).catch(error => {
+        console.log('删除商品' + error)
+      })
+    }
   },
   mounted () {
   },

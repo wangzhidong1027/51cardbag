@@ -10,6 +10,9 @@ const commonGetBankApi = baseApiURL + '/getBanks' //  C002获取银行列表
 const commonUploadImageApi = '/index.php?r=Common/UploadImg' //  C003图片上传
 const commonSettleApi = baseApiURL + '/settle' //  C004商户入驻接口
 const commonGetGoodsApi = baseApiURL1 + '/getMerchGoods' // C005 获取商户商品
+const commonSeleteGoodsApi = baseApiURL1 + 'delMerchGoods' // C006 删除商品
+const commonGetMerchIngoApi = baseApiURL1 + 'getMerchInfo' // c007 获取商户信息
+const commonGoodsPushApi = baseApiURL1 + 'goodsPush' // c008 发布商品
 
 // ---------状态常量--------- start
 // const vipStatusConst = {
@@ -24,7 +27,10 @@ export default {
   commonGetBankApi,
   commonGetGoodsApi,
   commonSettleApi,
-  commonUploadImageApi
+  commonUploadImageApi,
+  commonSeleteGoodsApi,
+  commonGetMerchIngoApi,
+  commonGoodsPushApi
 }
 </script>
 

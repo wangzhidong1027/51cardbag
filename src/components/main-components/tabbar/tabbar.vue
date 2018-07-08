@@ -1,12 +1,12 @@
 <template>
   <div id="tabber">
     <tabbar>
-      <tabbar-item>
-        <img slot="icon" src="">
+      <tabbar-item :class=" state==='index'? 'weui-bar__item_on' : ''">
+        <img slot="icon" src="../../../assets/images/goodmu.png">
         <span slot="label">商品</span>
       </tabbar-item>
-      <tabbar-item show-dot>
-        <img slot="icon" src="">
+      <tabbar-item :class=" state==='main'? 'weui-bar__item_on' : ''">
+        <img slot="icon" src="../../../assets/images/main.png">
         <span slot="label">我的</span>
       </tabbar-item>
     </tabbar>
@@ -22,11 +22,17 @@ export default {
   },
   name: 'Mytabbar',
   props: {
-
+    state: String
   }
 }
 </script>
 
 <style lang="less">
-
+.weui-bar__item_on{
+  .weui-tabbar__label{
+    span{
+      color: #333;
+    }
+  }
+}
 </style>

@@ -94,7 +94,7 @@ export default {
         a = JSON.parse(a)
         if (a.code === '10000' && a.data.err === '10000') {
           this.imgsrc = baseimg
-          this.$emit('input', 'a.data.data.imgUrl')
+          this.$emit('input', a.data.data.imgUrl)
         } else {
           this.$vux.toast.show({
             text: '<p style="line-height: 0.1rem;font-size: 0.16rem;">上传失败<p>',
