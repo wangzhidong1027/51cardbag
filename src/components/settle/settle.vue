@@ -184,21 +184,30 @@ export default {
         })
         return
       }
+      this.loading.show({text: '入驻中'})
       var jsonData = JSON.stringify(data)
-      console.log(jsonData)
       this.$axios.post(
         this.$GLOBAL.commonSettleApi,
         this.$qs.stringify({
           data: this.$base64.encode(jsonData)
         })
       ).then(res => {
-        var reslut = this.$base64.decode(res.data)
-        console.log(reslut)
+        this.loading.hide()
+        var reslut = JSON.parse(this.$base64.decode(res.data))
+        if (reslut.code === '10000') {
+          localStorage.setItem('apiAuth', reslut.data)
+          this.$router.push({
+            path: '/index'
+          })
+        } else {
+          this.$vux.alert.show({
+            title: '提示',
+            content: reslut.info
+          })
+        }
       }).catch(error => {
         console.log('商户入驻' + error)
       })
-      console.log(this.settleForm)
-      console.log(data)
     },
     chinese (value) {
       var res = this.$ecDo.checkType.check(value, 'chinese')

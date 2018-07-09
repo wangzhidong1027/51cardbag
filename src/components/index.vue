@@ -3,12 +3,12 @@
     <header>
       <div class="userinfo">
         <div class="merchant-img">
-          <img src="http://image.yifuka.com/CommonImg/20180424/152456337890209.jpeg" alt="">
+          <img :src="merchInfo.logo" alt="">
         </div>
         <div class="merchant-data">
           <div class="merchant-text">
-            <p class="name"><b>dfdsfsdfd</b></p>
-            <p class="address">fdsfsdfsad</p>
+            <p class="name"><b>{{merchInfo.companyname}}</b></p>
+            <p class="address">{{merchInfo.province_cn}}{{merchInfo.city_cn}}</p>
           </div>
           <div class="issue">
             <button><a>发布商品</a></button>
@@ -32,7 +32,7 @@
                 </swipeout-item>
               </swipeout>
               <div class="btnbox">
-                <div class="link-box"><x-button type="primary" :gradients="['#1D62F0', '#19D5FD']"><b class="shou">微信收款</b></x-button></div>
+                <!--<div class="link-box"><x-button type="primary" :gradients="['#1D62F0', '#19D5FD']"><b class="shou">微信收款</b></x-button></div>-->
                 <div class="link-box"><x-button type="primary" :gradients="['#FF2719', '#ff7700']"><b class="shou">分期收款</b></x-button></div>
                 <button class="vux-1px del" @click="deleteGood">删</button>
               </div>
@@ -67,28 +67,47 @@ export default{
   },
   data () {
     return {
-      goods: {}
+      merchInfo: {},
+      goods: []
     }
   },
   created () {
     // 获取商户信息
-    // this.$axios.post(
-    //   this.$GLOBAL.commonGetMerchIngoApi,
-    //   this.$qs.stringify({})
-    // ).then(res => {
-    //   console.log(res)
-    // }).catch(error => {
-    //   console.log('商品列表' + error)
-    // })
+    this.$axios.post(
+      this.$GLOBAL.commonGetMerchApi,
+      this.$qs.stringify({})
+    ).then(res => {
+      var reslut = JSON.parse(this.$base64.decode(res.data))
+      if (reslut.code === '10000') {
+        this.merchInfo = reslut.data
+      } else {
+        this.$vux.alert.show({
+          title: '提示',
+          content: reslut.info
+        })
+      }
+    }).catch(error => {
+      console.log('商品列表' + error)
+    })
     // 获取商品列表
-    // this.$axios.post(
-    //   this.$GLOBAL.commonGetGoodsApi,
-    //   this.$qs.stringify({})
-    // ).then(res => {
-    //   console.log(res)
-    // }).catch(error => {
-    //   console.log('商品列表' + error)
-    // })
+    this.$axios.post(
+      this.$GLOBAL.commonGetGoodsApi,
+      this.$qs.stringify({})
+    ).then(res => {
+      var reslut = JSON.parse(this.$base64.decode(res.data))
+      if (reslut.code === '10000') {
+        this.goods = reslut.data
+      } else if (reslut.code === '20010') {
+        this.goods = {}
+      } else {
+        this.$vux.alert.show({
+          title: '提示',
+          content: reslut.info
+        })
+      }
+    }).catch(error => {
+      console.log('商品列表' + error)
+    })
   },
   computed: {
 
@@ -96,7 +115,7 @@ export default{
   methods: {
     deleteGood (id) {
       this.$axios.post(
-        this.$GLOBAL.commonSeleteGoodsApi,
+        this.$GLOBAL.commonDelGoodsApi,
         this.$qs.stringify({id})
       ).then(res => {
         console.log(res)

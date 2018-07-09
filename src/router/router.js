@@ -46,6 +46,14 @@ const main = {
   },
   component: () => import('@/components/main')
 }
+const bankcard = {
+  path: '/bankcard',
+  name: 'bankcard',
+  meta: {
+    title: '对公账户'
+  },
+  component: () => import('@/components/mainpage/bankcard')
+}
 export const routers = [
   login,
   settle,
@@ -53,6 +61,7 @@ export const routers = [
   index,
   publish,
   main,
+  bankcard,
   {
     path: '/',
     redirect: '/login'

@@ -62,7 +62,20 @@ export default{
         data: this.$base64.encode(JSON.stringify(this.loginForm))
       })).then(res => {
         this.loading.hide()
-        console.log(res)
+        var reslut = JSON.parse(this.$base64.decode(res.data))
+        if (reslut.code === '10000') {
+          localStorage.setItem('apiAuth', reslut.data)
+          this.$router.replace({
+            path: '/index'
+          })
+        } else {
+          this.$vux.alert.show({
+            title: '提示',
+            content: reslut.info
+          })
+        }
+      }).catch(error => {
+        console.log('登录' + error)
       })
     },
     login () {
@@ -115,6 +128,7 @@ export default{
     }
   }
   .go-register{
+    width: 100%;
     display: flex;
     justify-content: center;
     a{

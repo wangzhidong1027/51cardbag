@@ -14,7 +14,7 @@ export const router = new Router(RouterConfig)
 router.beforeEach((to, from, next) => {
   // console.log('要转到'+to.name)
   //  console.log('拦截before')
-  let apiAuth = sessionStorage.getItem('apiAuth')
+  let apiAuth = localStorage.getItem('apiAuth')
   var title = to.meta.title || '卡宝管家'
   window.document.title = title
   if (!apiAuth && to.name !== 'login' && to.name !== 'settle' && to.name !== 'error-500' && to.name !== 'error-404') { // 如果不是注册，并且未登录，就跳转到登录页面

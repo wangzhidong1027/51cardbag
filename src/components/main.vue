@@ -1,34 +1,50 @@
 <template>
-  <div id="main">
+  <div id='ymain'>
      <ul>
-      <li><a><span><i class="recode"></i>收款记录</span><b class="iconfont icon-jiantou-copy"></b></a></li>
+       <li><a><span><i class="recode"></i>收款记录</span><b class="iconfont icon-jiantou-copy"></b></a></li>
+       <li><a href="#/bankcard"><span><i class="card"></i>对公账户</span><b class="iconfont icon-jiantou-copy"></b></a></li>
     </ul>
     <div class="out_box">
       <button @click="loginout">退出登录</button>
     </div>
+     <mytabbar state='main'></mytabbar>
   </div>
 </template>
 
 <script>
+import Mytabbar from './main-components/tabbar/tabbar'
 export default{
-  name: 'main',
+  name: 'mainpage',
+  components: {
+    Mytabbar
+  },
   data () {
     return {
-
     }
   },
   methods: {
     loginout () {
-
+      this.$axios.post(
+        this.$GLOBAL.commonLoginOutApi,
+        this.$qs()
+      ).then(res => {
+        localStorage.clear()
+        this.$router.push({
+          path: './login'
+        })
+      }).catch(error => {
+        console.log('用户退出' + error)
+      })
     }
   }
 }
 </script>
 
 <style lang='less'>
-#main {
+#ymain {
     width: 100%;
     height: 100%;
+    overflow: scroll;
     position: relative;
     ul {
       a {
@@ -60,6 +76,13 @@ export default{
           background-repeat: no-repeat;
           background-position: center center;
         }
+        .card{
+          background-image: url("../assets/images/paytype6.png");
+          -webkit-background-size: 100%;
+          background-size: 100%;
+          background-repeat: no-repeat;
+          background-position: center center;
+        }
         b {
           color: #dedede;
         }
@@ -72,7 +95,7 @@ export default{
       position: absolute;
       bottom: .1rem;
       left: 0;
-      padding: 0.15rem .15rem;
+      padding: 0 0.15rem 0.3rem .15rem;
       width: 100%;
       button {
         width: 100%;

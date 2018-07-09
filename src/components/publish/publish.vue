@@ -3,7 +3,7 @@
     <div class="formbox">
       <group gutter='0'>
         <div class="input-box"><x-input placeholder='标题 输入商品名称' v-model="publishForm.name" ref='name' type='text' :max='16' required></x-input></div>
-        <div class="input-box vux-1px-tb"><x-input placeholder='价格 输入商品价格' type='number' is-type='number' v-model="publishForm.price" ref="price" required></x-input></div>
+        <div class="input-box vux-1px-tb"><x-input placeholder='价格 输入商品价格' type='number' :is-type='isprive' v-model="publishForm.price" ref="price" required></x-input></div>
         <div class="textarea-box">
           <x-textarea placeholder='商品简介（40字以内）' :max='40' :rows='4' v-model="recommend" ></x-textarea>
         </div>
@@ -57,12 +57,17 @@ export default{
       // }
       // if (!this.imgsrc) {
       //   return true
-      // }
-      console.log(1)
       return false
     }
   },
   methods: {
+    isprive (value) {
+      if (/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(value)) {
+        return { valid: true }
+      } else {
+        return { valid: false, msg: '请填写正确价格，最多两位小数' }
+      }
+    },
     getimg () {
       document.getElementById('publishimg').click()
     },
@@ -161,10 +166,26 @@ export default{
       this.loading.show({text: '发布中'})
       this.$axios.post(
         this.$GLOBAL.commonGoodsPushApi,
-        this.$qs.stringify({})
+        this.$qs.stringify({
+          pmoney: this.publishForm.price,
+          pname: this.publishForm.name,
+          pintro: this.recommend,
+          pdpicture: this.imgsrc,
+          zftype: '123'
+        })
       ).then(res => {
         this.loading.hide()
-        console.log(res)
+        var reslut = JSON.parse(this.$base64.decode(res.data))
+        if (reslut.code === '10000') {
+          this.$router.push({
+            path: '/index'
+          })
+        } else {
+          this.$vux.alert.show({
+            title: '提示',
+            content: reslut.info
+          })
+        }
       }).catch(err => {
         console.log('发布商品' + err)
       })
@@ -228,7 +249,6 @@ export default{
     }
   }
   .btnbox{
-    height: .5rem;
   }
 }
 </style>

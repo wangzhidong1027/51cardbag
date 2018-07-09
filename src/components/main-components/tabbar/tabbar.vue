@@ -1,11 +1,11 @@
 <template>
   <div id="tabber">
     <tabbar>
-      <tabbar-item :class=" state==='index'? 'weui-bar__item_on' : ''">
+      <tabbar-item :selected=" state == 'index'" link="/index">
         <img slot="icon" src="../../../assets/images/goodmu.png">
         <span slot="label">商品</span>
       </tabbar-item>
-      <tabbar-item :class=" state==='main'? 'weui-bar__item_on' : ''">
+      <tabbar-item :selected="state == 'main'" link="/main">
         <img slot="icon" src="../../../assets/images/main.png">
         <span slot="label">我的</span>
       </tabbar-item>
@@ -23,6 +23,8 @@ export default {
   name: 'Mytabbar',
   props: {
     state: String
+  },
+  mounted () {
   }
 }
 </script>
@@ -34,5 +36,8 @@ export default {
       color: #333;
     }
   }
+}
+#tabber .weui-tabbar{
+  background-color: #fff;
 }
 </style>

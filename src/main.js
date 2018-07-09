@@ -47,8 +47,8 @@ const service = Axios.create({
 })
 service.interceptors.request.use(function (config) {
   // console.log('请求开始')
-  config.headers['Token'] = sessionStorage.getItem('apiAuth')
-  config.headers['platform'] = sessionStorage.getItem('platform')
+  config.headers['Token'] = localStorage.getItem('apiAuth')
+  config.headers['platform'] = localStorage.getItem('platform')
   return config
 })
 // 响应拦截
