@@ -11,30 +11,30 @@
             <p class="address">{{merchInfo.province_cn}}{{merchInfo.city_cn}}</p>
           </div>
           <div class="issue">
-            <button><a>发布商品</a></button>
+            <button><a href="#/publish">发布商品</a></button>
           </div>
         </div>
       </div>
     </header>
     <div id="goods-box">
-      <flexbox orient="vertical">
+      <flexbox orient="vertical" v-for="(itemgoods,index) in goods" :key="itemgoods.pid">
         <flexbox-item>
           <group gutter="0">
             <div class="item">
               <swipeout>
                 <swipeout-item>
                   <div slot="content" class="demo-content vux-1px-t">
-                    <goods-item :goods="goods"></goods-item>
+                    <goods-item v-show="JSON.stringify(goods)" :iteminfo="itemgoods"></goods-item>
                   </div>
                   <div slot="right-menu">
-                    <swipeout-button  type="default" @click.native="deleteGood">删除</swipeout-button>
+                    <swipeout-button  type="default" @click.native="deleteGood(itemgoods.pid,index)">删除</swipeout-button>
                   </div>
                 </swipeout-item>
               </swipeout>
               <div class="btnbox">
                 <!--<div class="link-box"><x-button type="primary" :gradients="['#1D62F0', '#19D5FD']"><b class="shou">微信收款</b></x-button></div>-->
-                <div class="link-box"><x-button type="primary" :gradients="['#FF2719', '#ff7700']"><b class="shou">分期收款</b></x-button></div>
-                <button class="vux-1px del" @click="deleteGood">删</button>
+                <div class="link-box"><x-button :link="'/paycode/'+ itemgoods.pid" type="primary" :gradients="['#FF2719', '#ff7700']"><b class="shou">分期收款</b></x-button></div>
+                <button class="vux-1px del" @click="deleteGood(itemgoods.pid,index)">删</button>
               </div>
             </div>
           </group>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { Divider, XButton, Flexbox, FlexboxItem, Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
+import { Divider, XButton, Flexbox, FlexboxItem, Swipeout, SwipeoutItem, SwipeoutButton, Actionsheet } from 'vux'
 import GoodsItem from './goodlist/goods-item'
 import Mytabbar from './main-components/tabbar/tabbar'
 
@@ -63,12 +63,14 @@ export default{
     Swipeout,
     SwipeoutItem,
     SwipeoutButton,
-    FlexboxItem
+    FlexboxItem,
+    Actionsheet
   },
   data () {
     return {
       merchInfo: {},
-      goods: []
+      goods: [],
+      show6: true
     }
   },
   created () {
@@ -113,14 +115,37 @@ export default{
 
   },
   methods: {
-    deleteGood (id) {
-      this.$axios.post(
-        this.$GLOBAL.commonDelGoodsApi,
-        this.$qs.stringify({id})
-      ).then(res => {
-        console.log(res)
-      }).catch(error => {
-        console.log('删除商品' + error)
+    deleteGood (id, index) {
+      const _this = this
+      this.$vux.confirm.show({
+        title: '确定删除？',
+        onConfirm () {
+          _this.loading.show({text: '删除中'})
+          _this.$axios.post(
+            _this.$GLOBAL.commonDelGoodsApi,
+            _this.$qs.stringify({
+              productId: id
+            })
+          ).then(res => {
+            _this.loading.hide()
+            var result = JSON.parse(_this.$base64.decode(res.data))
+            if (result.code === '10000') {
+              _this.$vux.toast.show({
+                text: '删除成功',
+                type: 'success'
+              })
+              _this.goods.splice(index, 1)
+            } else {
+              _this.$vux.alert.show({
+                title: '提示',
+                content: result.info
+              })
+            }
+          }).catch(error => {
+            _this.loading.hide()
+            console.log('删除商品' + error)
+          })
+        }
       })
     }
   },

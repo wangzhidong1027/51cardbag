@@ -15,6 +15,7 @@ const commonDelGoodsApi = baseApiURL1 + '/delMerchGoods' // C007 删除商品
 const commonGetMerchApi = baseApiURL1 + '/getMerchInfo' // c008 获取商户信息
 const commonGetBankNoApi = baseApiURL1 + '/getMerchBank' // c009 获取商户对公账户
 const commonGoodsPushApi = baseApiURL1 + '/goodsPush' // c010 发布商品
+const commonGoodInfoApi = baseApiURL1 + '/getGoods' // 011 获取单条商品信息
 
 // ---------状态常量--------- start
 // const vipStatusConst = {
@@ -34,7 +35,8 @@ export default {
   commonDelGoodsApi,
   commonGetMerchApi,
   commonGetBankNoApi,
-  commonGoodsPushApi
+  commonGoodsPushApi,
+  commonGoodInfoApi
 }
 </script>
 

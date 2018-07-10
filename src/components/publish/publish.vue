@@ -140,7 +140,6 @@ export default{
     },
     publishGoods () {
       for (var i in this.publishForm) {
-        console.log(this.$refs[i].valid)
         if (!this.$refs[i].valid) {
           this.$vux.alert.show({
             title: '提示',
@@ -170,8 +169,7 @@ export default{
           pmoney: this.publishForm.price,
           pname: this.publishForm.name,
           pintro: this.recommend,
-          pdpicture: this.imgsrc,
-          zftype: '123'
+          pdpicture: this.imgsrc
         })
       ).then(res => {
         this.loading.hide()

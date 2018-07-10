@@ -54,6 +54,15 @@ const bankcard = {
   },
   component: () => import('@/components/mainpage/bankcard')
 }
+const paycode = {
+  path: '/paycode/:id',
+  name: 'paycode',
+  meta: {
+    title: '扫码支付'
+  },
+  component: () =>
+    import('@/components/qrcode/qrcode')
+}
 export const routers = [
   login,
   settle,
@@ -62,6 +71,7 @@ export const routers = [
   publish,
   main,
   bankcard,
+  paycode,
   {
     path: '/',
     redirect: '/login'

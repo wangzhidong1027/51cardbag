@@ -1,17 +1,17 @@
 <template>
-  <div class="goodsitem">
+  <div class="goodsitem" >
     <div class="goods-item vux-1px-b">
       <div class="goodimg">
         <span style="font-size:20px;"><spinner type="ios"></spinner></span>
-        <x-img :src="src" @on-success="success" @on-error="error" class="ximg-demo" error-class="ximg-error" container="#card-index"></x-img>
+        <x-img :src="iteminfo.pdpicture" @on-success="success" @on-error="error" class="ximg-demo" error-class="ximg-error" container="#card-index"></x-img>
       </div>
       <div class="good-text">
-        <p><b>了空喊口号离开ID防守大打算打算阿萨德撒</b></p>
+        <p><b>{{iteminfo.pname}}</b></p>
         <div class="recommend">
-          法轮大法看见了看电得了副科级连接就了骷髅精3213123
+          {{iteminfo.pintro}}
         </div>
         <div class="price">
-          <i>￥</i><b>9000.00</b>
+          ￥<i>{{iteminfo.pmoney | money}}</i><b>{{iteminfo.pmoney | fractional}}</b>
         </div>
       </div>
     </div>
@@ -26,12 +26,30 @@ export default {
     XImg,
     Spinner
   },
-  propos: {
-    goods: Object
+  props: {
+    iteminfo: Object
   },
   data () {
-    return {
-      src: 'http://image.yifuka.com/CommonImg/20180424/152456337890209.jpeg'
+    return {}
+  },
+  filters: {
+    money: function (value) {
+      var num = ''
+      if (value.toString().indexOf('.') === -1) {
+        num = value + '.'
+      } else {
+        num = value.toString().split('.')[0] + '.'
+      }
+      return num
+    },
+    fractional: function (value) {
+      var num = ''
+      if (value.toString().indexOf('.') === -1) {
+        num = '00'
+      } else {
+        num = value.toString().split('.')[1]
+      }
+      return num
     }
   },
   methods: {
@@ -43,6 +61,8 @@ export default {
       const span = ele.parentNode.querySelector('span')
       span.innerText = 'load error'
     }
+  },
+  mounted () {
   }
 }
 </script>
@@ -102,12 +122,14 @@ export default {
     }
     .price{
       color: #ff3636;
+      font-size: 0.14rem;
       i{
         font-style: normal;
-        font-size: 0.14rem;
+        font-weight: 700;
+        font-size: 0.17rem;
       }
       b{
-        font-size: 0.17rem;
+
       }
     }
   }

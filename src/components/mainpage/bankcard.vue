@@ -36,7 +36,6 @@ export default{
             mask = mask + '*'
           }
           hien = this.bank.bankno.slice(0, 3) + mask + this.bank.bankno.slice(this.bank.bankno.length - 3, this.bank.bankno.length)
-          console.log(hien)
         }
         return this.show ? this.bank.bankno : hien
       } else {
@@ -47,10 +46,11 @@ export default{
   filters: {
     capitalize: function (value) {
       if (value) {
-        var Anum = value.substring
-        var len = Anum.length
+        var Anum = value.substring(0)
+        var len = value.length
         var r = len % 4
-        var No = Anum.slice(0, len - r).match(/\d{4}/g).join(' ') + ' ' + Anum.slice(len - r, len)
+        console.log(Anum.slice(0, len - r).match(/.{4}/g))
+        var No = Anum.slice(0, len - r).match(/.{4}/g).join(' ') + ' ' + Anum.slice(len - r, len)
         return No
       } else {
         return ''
